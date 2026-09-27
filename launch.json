@@ -1,0 +1,24 @@
+{
+  "kind": "evm_project",
+  "token": {
+    "contract": "Token",
+    "name": "ClaimRegistry Demo",
+    "symbol": "CLAIMDEMO",
+    "decimals": 18
+  },
+  "contracts": [
+    {
+      "contract": "ClaimRegistry",
+      "constructorArgs": [
+        "0x93f0e07174bb25a4a681698dac27ee3397fcae43cce601f4be59c6130c565cf3"
+      ]
+    }
+  ],
+  "pool": {
+    "pairedCurrency": "0x0000000000000000000000000000000000000000",
+    "fee": 3000,
+    "tickSpacing": 60,
+    "initialPrice": "79228162514264337593543950336"
+  },
+  "notes": "BLOCKING GAP - no launch token in the accepted tree. The accepted source has exactly one deployable application contract, ClaimRegistry (src/ClaimRegistry.sol plus the internal library src/MerkleProofLib.sol). The approved brief forbids creating a token, and this manifest assignment may write only launch.json, so no token source was added. The schema requires a token entry: token.contract \"Token\" and its name, symbol and decimals are a placeholder for the fixed-supply ERC-20 with no constructor arguments that launch policy expects (18 decimals, 10^27 units minted to msg.sender). No contract named Token exists in this tree, so building the attestation will fail until an accepted token implementation is delivered or the policy allows a launch with no token. Treat this as unresolved; do not deploy on the basis of this entry.\n\nClaimRegistry: constructor(bytes32 merkleRoot_), nonpayable, one static argument. The value is the demo root 0x93f0e07174bb25a4a681698dac27ee3397fcae43cce601f4be59c6130c565cf3 of the documented 258-leaf tree (docs/demo/leaves.json, indices 0..257, amount_i = (i+1)*1e18, public demo keys that hold nothing). It matches Deploy.DEMO_ROOT and is rebuilt by test_DemoRootMatchesJavaScriptAndDeployScript. The root is immutable. The contract has no owner, pause, upgrade, receive/fallback or external calls, so no $owner or $token reference is needed. The constructor does not read msg.sender and needs no initialization call. claim(index, amount, proof) builds the leaf keccak256(bytes.concat(keccak256(abi.encode(index, msg.sender, amount)))), checks it against the root with sorted-pair hashing, and marks the index in a bitmap. It records amount, claimedBy and totalClaimedOf and emits Claimed. It moves no funds. AlreadyClaimed and InvalidProof both revert before any storage write, so a failed proof never uses up a claim. Runtime is 1,557 bytes with no DELEGATECALL, CALLCODE or SELFDESTRUCT.\n\nThe pool pairs with native ETH on Sepolia: fee 3000, tickSpacing 60, sqrtPriceX96 2^96 (a 1:1 price, used only by legacy policies), no hook. Target chain is Sepolia (11155111), never mainnet. The deployment address, transaction hash and explorer link are pending. DEPLOYMENT.md records them after the deployer broadcasts. Compiled with solc 0.8.26 from ^0.8.24 source, because 0.8.24 is not in the offline toolchain (see README)."
+}
