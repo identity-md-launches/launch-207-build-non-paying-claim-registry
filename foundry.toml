@@ -1,0 +1,29 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+script = "script"
+
+# The contract is written against Solidity 0.8.24 (`pragma solidity ^0.8.24`). The compiler is
+# pinned to 0.8.26 because that is the newest 0.8.2x release present in the offline toolchain and
+# the version the protected launch floor (`pragma solidity 0.8.26`) requires. See README.md.
+solc_version = "0.8.26"
+evm_version = "paris"
+optimizer = true
+optimizer_runs = 200
+bytecode_hash = "none"
+cbor_metadata = false
+
+# Offline, sandboxed verification: no network, no shell, no filesystem.
+offline = true
+ffi = false
+fs_permissions = []
+
+[fuzz]
+runs = 256
+seed = "0x494d44"
+
+[fmt]
+line_length = 120
+tab_width = 4
